@@ -11,19 +11,19 @@ API documentation is [here](https://localhost:5000/swagger/index.html)
 
 
 #### Required Features
-- Customer
-    Get a list of all customers
-    Create a customer
-    Get a specific customer by ID
-    Get a specific customer by name
+Customer
+  - Get a list of all customers
+  - Create a customer
+  - Get a specific customer by ID
+  - Get a specific customer by name
     
-- Discounts
-    Get a list of all discounts
-    Get a specific discount percentage by type
-    Add a new discount type
+Discounts
+  - Get a list of all discounts
+  - Get a specific discount percentage by type
+  - Add a new discount type
 
-- Invoice
-    Get total invoice amount given a bill
+Invoice
+  - Get total invoice amount given a bill
 
 
 #### Technologies Used
