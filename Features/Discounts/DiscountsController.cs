@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ShopsRUs.Service.Features.Discounts
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class DiscountsController : ControllerBase
     {
@@ -22,14 +22,14 @@ namespace ShopsRUs.Service.Features.Discounts
             _logger = logger;
         }
 
-        [HttpPost(Name = nameof(Create))]
+        [HttpPost(Name = nameof(AddDiscountType))]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [OpenApiTag("ShopsRUs API")]
-        public async Task<IActionResult> Create(CreateDiscountTypeRequest createDiscountTypeRequest)
+        public async Task<IActionResult> AddDiscountType(CreateDiscountTypeRequest createDiscountTypeRequest)
         {
             _logger.LogInformation($"User Request: {JsonConvert.SerializeObject(createDiscountTypeRequest)}");
             if (!ModelState.IsValid)

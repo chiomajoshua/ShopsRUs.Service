@@ -1,11 +1,10 @@
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ShopsRUs.Service.Core.Storage.Models;
 
 namespace ShopsRUs.Service
 {
@@ -13,14 +12,48 @@ namespace ShopsRUs.Service
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var config = new ConfigurationBuilder()
+           .AddJsonFile("appsettings.json")
+           .Build();
+
+            Log.Logger = new LoggerConfiguration()
+            .Enrich.FromLogContext()
+            .ReadFrom.Configuration(config)
+            .CreateLogger();
+
+            try
+            {
+                Log.Information("Application Is Starting");
+                CreateWebHostBuilder(args)
+                    .Build()
+                    .MigrateDatabase()
+                    .Run();
+            }
+            catch (Exception exception)
+            {
+                Log.Fatal(exception, "Application Startup Failed");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+             WebHost.CreateDefaultBuilder(args)
+             .UseKestrel()
+             .UseSerilog()
+             .UseIISIntegration()
+             .UseIIS()
+             .UseEnvironment(LoadEnvironment())
+             .UseStartup<Startup>();
+
+        public static string LoadEnvironment()
+        {
+            var config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json")
+            .Build();
+            return config.GetSection("Serilog").GetSection("Properties").GetSection("Environment").Value;
+        }
     }
 }

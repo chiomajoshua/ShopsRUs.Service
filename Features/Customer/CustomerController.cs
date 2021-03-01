@@ -22,14 +22,14 @@ namespace ShopsRUs.Service.Features.Customer
             _logger = logger;
         }
 
-        [HttpPost(Name = nameof(Create))]
+        [HttpPost(Name = nameof(CreateNewUser))]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [OpenApiTag("ShopsRUs API")]
-        public async Task<IActionResult> Create(CreateUserRequest createAccountRequest)
+        public async Task<IActionResult> CreateNewUser(CreateUserRequest createAccountRequest)
         {
             _logger.LogInformation($"User Request: {JsonConvert.SerializeObject(createAccountRequest)}");
             if (!ModelState.IsValid)
